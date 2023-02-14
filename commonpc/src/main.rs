@@ -10,9 +10,6 @@ fn fibonacci(n: u32) -> u32 {
     }
 }
 
-fn carol() {
-    
-}
 fn main() {
     let celsius = 37.0;
     let fahrenheit = celsius_to_fahrenheit(celsius);
