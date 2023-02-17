@@ -8,6 +8,6 @@ mod png;
 
 pub type Error = Box<dyn std::error::Error>;
 
-fn main() -> Result<()>{
+fn main() -> Result<()> {
     todo!();
 }

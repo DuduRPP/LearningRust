@@ -1,23 +1,23 @@
-use std::{str::FromStr, fmt::Display};
-use anyhow::{anyhow,Result};
+use anyhow::{anyhow, Result};
+use std::{fmt::Display, str::FromStr};
 
 #[derive(PartialEq, Debug)]
-pub struct ChunkType{
-    byte_type: [u8;4],
+pub struct ChunkType {
+    byte_type: [u8; 4],
 }
 
-impl ChunkType{
-    pub fn bytes(&self) -> [u8;4]{
-        let byte_type: [u8;4] = self.byte_type.map(|x| x as u8);
+impl ChunkType {
+    pub fn bytes(&self) -> [u8; 4] {
+        let byte_type: [u8; 4] = self.byte_type.map(|x| x as u8);
         byte_type
     }
-    fn is_critical(&self) -> bool{
+    fn is_critical(&self) -> bool {
         self.byte_type[0] & 0b100000 == 0
     }
     fn is_public(&self) -> bool {
         self.byte_type[1] & 0b100000 == 0
     }
-    
+
     fn is_valid(&self) -> bool {
         self.is_reserved_bit_valid()
     }
@@ -31,40 +31,41 @@ impl ChunkType{
     }
 }
 
-impl TryFrom<[u8;4]> for ChunkType{
+impl TryFrom<[u8; 4]> for ChunkType {
     type Error = anyhow::Error;
-    fn try_from(value: [u8;4]) -> Result<Self, Self::Error>{
-        Ok(ChunkType{byte_type: value})
+    fn try_from(value: [u8; 4]) -> Result<Self, Self::Error> {
+        Ok(ChunkType { byte_type: value })
     }
 }
-impl FromStr for ChunkType{
+impl FromStr for ChunkType {
     type Err = anyhow::Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.len() != 4{
+        if s.len() != 4 {
             Err(anyhow!("type should be of 4 bytes"))
-        } else{
+        } else {
             let mut full_letters = true;
-            let byte_type: [u8;4] = s.as_bytes().try_into().unwrap();
+            let byte_type: [u8; 4] = s.as_bytes().try_into().unwrap();
 
-            let byte_type: [u8;4] = byte_type.map(|x| if full_letters && !x.is_ascii_alphabetic(){
-                full_letters = false;
-                x
-            }else {
-                x
+            let byte_type: [u8; 4] = byte_type.map(|x| {
+                if full_letters && !x.is_ascii_alphabetic() {
+                    full_letters = false;
+                    x
+                } else {
+                    x
+                }
             });
 
-            if full_letters == true{
-                Ok(ChunkType { byte_type }) 
+            if full_letters == true {
+                Ok(ChunkType { byte_type })
             } else {
                 Err(anyhow!("invalid chunk type byte"))
             }
-
         }
     }
 }
-impl Display for ChunkType{
+impl Display for ChunkType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-       write!(f,"{}",std::str::from_utf8(&self.byte_type).unwrap())
+        write!(f, "{}", std::str::from_utf8(&self.byte_type).unwrap())
     }
 }
 
@@ -166,4 +167,3 @@ mod tests {
         let _are_chunks_equal = chunk_type_1 == chunk_type_2;
     }
 }
-
