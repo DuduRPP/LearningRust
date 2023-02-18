@@ -7,11 +7,27 @@ mod chunk_type;
 mod commands;
 mod png;
 
-use args::Cli;
+pub use args::{Commands,Cli, EncodeArgs};
+use commands::{encode,print,decode,remove};
+
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    println!("one: {:?}", cli.one);
+    match cli.command{
+        Commands::Encode(encode_args) => {
+            encode(encode_args)?;
+        }
+        Commands::Decode(decode_args) => {
+            decode(decode_args)?;
+        }
+        Commands::Remove(remove_args) => {
+            remove(remove_args)?;
+        }
+        Commands::Print(print_args) =>{
+            print(print_args)?;
+        }
+    }
+
     Ok(())
 }

@@ -86,7 +86,6 @@ impl TryFrom<&[u8]> for Chunk {
             png_crc[i - length - 8] = value[i];
         }
         let png_crc: u32 = u32::from_be_bytes(png_crc);
-        println!("{png_crc}");
         if png_crc == generated_chunk.crc() {
             Ok(generated_chunk)
         } else {

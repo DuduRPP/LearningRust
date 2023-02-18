@@ -10,7 +10,7 @@ pub struct Png {
 }
 
 impl Png {
-    const STANDARD_HEADER: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
+    pub const STANDARD_HEADER: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
 
     fn chunks(&self) -> &Vec<Chunk> {
         &self.chunks
@@ -18,7 +18,7 @@ impl Png {
     fn from_chunks(chunks: Vec<Chunk>) -> Self {
         Png { chunks }
     }
-    fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
+    pub fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
         for chunk in self.chunks() {
             if chunk.chunk_type().to_string().eq(chunk_type) {
                 return Some(&chunk);
@@ -26,10 +26,10 @@ impl Png {
         }
         None
     }
-    fn append_chunk(&mut self, chunk: Chunk) {
+    pub fn append_chunk(&mut self, chunk: Chunk) {
         self.chunks.push(chunk);
     }
-    fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk> {
+    pub fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk> {
         for (i, chunk) in self.chunks.iter().enumerate() {
             if chunk.chunk_type().to_string().eq(chunk_type) {
                 let ele = self.chunks.swap_remove(i);
@@ -38,7 +38,7 @@ impl Png {
         }
         bail!("Couldnt find chunk to remove.")
     }
-    fn as_bytes(&self) -> Vec<u8> {
+    pub fn as_bytes(&self) -> Vec<u8> {
         let mut bytes: Vec<u8> = Vec::new();
         bytes.extend(Png::STANDARD_HEADER);
         self.chunks.iter().for_each(|chunk| {
