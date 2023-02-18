@@ -101,9 +101,8 @@ impl Display for Chunk {
             "Length:{}\nType:{}\nData:{}\nCRC:{}",
             self.length(),
             self.chunk_type().to_string(),
-            self.data_as_string().unwrap_or_else(|_|{
-                "couldn't read data as string".to_string()
-            }),
+            self.data_as_string()
+                .unwrap_or_else(|_| { "couldn't read data as string".to_string() }),
             self.crc(),
         )
     }

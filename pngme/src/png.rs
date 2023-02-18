@@ -75,16 +75,16 @@ impl TryFrom<&[u8]> for Png {
 impl Display for Png {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut result = String::new();
-        for num in Png::STANDARD_HEADER{
+        for num in Png::STANDARD_HEADER {
             result.push_str(&num.to_string());
             result.push_str(" ");
         }
         result.push_str("\n");
-        self.chunks().into_iter().enumerate().for_each(|(i,x)|{
+        self.chunks().into_iter().enumerate().for_each(|(i, x)| {
             result.push_str(&format!("----- Chunk {i} -----\n"));
-            result.push_str(&format!("{}\n",x));
+            result.push_str(&format!("{}\n", x));
         });
-        write!(f, "{}",result)
+        write!(f, "{}", result)
     }
 }
 

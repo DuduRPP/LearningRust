@@ -1,4 +1,5 @@
 pub use anyhow::Result;
+use clap::Parser;
 
 mod args;
 mod chunk;
@@ -6,8 +7,11 @@ mod chunk_type;
 mod commands;
 mod png;
 
-pub type Error = Box<dyn std::error::Error>;
+use args::Cli;
 
 fn main() -> Result<()> {
-    todo!();
+    let cli = Cli::parse();
+
+    println!("one: {:?}", cli.one);
+    Ok(())
 }
